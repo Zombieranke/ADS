@@ -62,6 +62,10 @@ public class Entry
 		{
 			System.out.println("Entry has no data yet. If you want to update the data use the 'IMPORT' function\n");
 		}
+		else
+		{
+			share.plot();
+		}
 	}
 	
 }

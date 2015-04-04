@@ -70,6 +70,93 @@ public class Share
 		while(reader.readRecord() && differenceInMillis < 2.6e9);
 	}
 	
+	public void plot()
+	{
+		int i = 0;
+		int j = 0;
+		double min = close[0]; // must not be 0 as it would be then smaller than every array entry
+		double max = close[0]; // would not be necessary here, but for consistency
+		int loopCount = 0;
+		
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+		
+		
+		for(i=0;i<30;i++)
+		{
+			if(date[i] ==  null)
+			{
+				loopCount = i;
+				break;
+			}
+			else
+			{
+				if(close[i]>max)
+				{
+					max = close[i];
+				}
+				else if(close[i] < min)
+				{
+					min = close[i];
+				}
+			}
+		}
+		
+		
+		double stepY = (max - min)/34;
+		int stepX = 3;
+		double matrixMin = min - 3*stepY;
+		
+		char[][] matrix = new char[94][40];
+		for(i=0;i<40;i++)
+		{
+			for(j=0;j<94;j++)
+			{
+				matrix[i][j] = ' ';
+			}
+		}
+		
+		
+		Date[] turnedAround = new Date[loopCount];
+	
+		for(i=0;i<loopCount;i++)
+		{
+			turnedAround[i] = date[loopCount - i];
+		}
+		
+		Date lastDate = turnedAround[0];
+	
+		Calendar lastTime = new GregorianCalendar();
+		lastTime.setTime(lastDate);
+		
+		Calendar temp = new GregorianCalendar();
+		int daysSkipped = 0;
+		int daysSkippedTotal = 0;
+		
+		int x = 0;
+		int y = 0;
+		
+		for(i=0;i<loopCount;i++)
+		{
+			temp.setTime(turnedAround[i]);
+			
+			if(temp.getTimeInMillis() <= lastTime.getTimeInMillis() + 86400000 * (1+daysSkipped))
+			{
+				x = 2 + stepX*i + 3*daysSkippedTotal;
+				y = (int) Math.round((close[i] - matrixMin)/stepY);
+				matrix[y][x] = 'X';
+				
+				daysSkipped = 0;
+			}
+			else
+			{
+				daysSkipped++;
+				daysSkippedTotal++;
+				i--;
+			}
+		}
+		
+	}
+	
 	public void print()
 	{
 		int i;
