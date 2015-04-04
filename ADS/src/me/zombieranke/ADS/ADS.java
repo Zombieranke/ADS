@@ -6,6 +6,9 @@ import java.util.Locale;
 import java.util.Scanner;
 
 public class ADS {
+	
+	static MyHashtable nameTable;
+	static MyHashtable shortNameTable;
 
 	public static void main(String[] args) throws IOException, ParseException
 	{
@@ -77,22 +80,54 @@ public class ADS {
 		String shortName = sc.nextLine();
 		System.out.println("Enter WKN: ");
 		String wkn = sc.nextLine();
+
+		if(nameTable == null)
+		{
+			nameTable = new MyHashtable();
+			
+		}
+
+		if(shortNameTable == null)
+		{
+			shortNameTable = new MyHashtable();
+		}
 		
-		Share toAdd = new Share(name,shortName,wkn);
+		Entry toAdd = new Entry(name,shortName,wkn);
 		
-		//Implement adding to Hashtable here
-		
-		
+		nameTable.addEntry(toAdd,name);
+		shortNameTable.addEntry(toAdd,shortName);
 	}
 	
 	private static void del(Scanner sc)
 	{
-		
+		System.out.println("Do want you want to delete according to name(1) or to short name(2)?");
+		String option = sc.nextLine();
+		System.out.println("What share would you like to delete?");
+		String toDelete = sc.nextLine();
+		if(option.equalsIgnoreCase("name") || option.equalsIgnoreCase("1"))
+		{
+			nameTable.deleteEntry(toDelete);
+		}
+		else if(option.equalsIgnoreCase("short name") || option.equalsIgnoreCase("2") || option.equalsIgnoreCase("shortname"))
+		{
+			shortNameTable.deleteEntry(toDelete);
+		}
 	}
 	
 	private static void importData(Scanner sc)
 	{
-		
+		System.out.println("Do want you want to import according to name(1) or to short name(2)?");
+		String option = sc.nextLine();
+		System.out.println("What share would you like to import?");
+		String toDelete = sc.nextLine();
+		if(option.equalsIgnoreCase("name") || option.equalsIgnoreCase("1"))
+		{
+			nameTable.deleteEntry(toDelete);
+		}
+		else if(option.equalsIgnoreCase("short name") || option.equalsIgnoreCase("2") || option.equalsIgnoreCase("shortname"))
+		{
+			shortNameTable.deleteEntry(toDelete);
+		}
 	}
 	
 	private static void search(Scanner sc)

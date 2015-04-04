@@ -13,10 +13,6 @@ import com.csvreader.CsvReader;
 
 public class Share
 {
-	private String name;
-	private String shortName;
-	private String wkn;
-	
 	private Date date[];
 	private double open[];
 	private double high[];
@@ -32,12 +28,8 @@ public class Share
 	 * @param shortName The short name of the share
 	 * @param wkn The Wertpapierkennummer of the share
 	 */
-	public Share(String name, String shortName, String wkn)
+	public Share()
 	{
-		this.name = name;
-		this.shortName = shortName;
-		this.wkn = wkn;
-		
 		date = new Date[30];
 		open = new double[30];
 		high = new double[30];
@@ -83,8 +75,6 @@ public class Share
 		int i;
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
 		
-		System.out.println("Name: " + name + ", Short Name: " + shortName + ", WKN: " + wkn);
-		
 		for(i = 0;i<date.length;i++)
 		{
 			if(date[i] ==  null)
@@ -103,7 +93,6 @@ public class Share
 	{
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.ROOT);
 		
-		System.out.println("Name: " + name + ", Short name: " + shortName + ", WKN: " + wkn);
 		if(date[0] !=  null)
 		{
 			System.out.println("Date: " + df.format(date[0]) + ", Open: " + open[0] + ", High: " + high[0] + ", Low: " + low[0] + ", Close: " + close[0] + ", Volume: " + volume[0] + ", Adj Close: " + adj_close[0]);
