@@ -101,13 +101,16 @@ public class Share
 		
 		
 		double stepY = (max - min)/34;
-		int stepX = 3;
+		int stepX = 5;
 		double matrixMin = min - 3*stepY;
+		int matrixWidth = 30*stepX+4;
+		int matrixHeight = 40;
 		
-		char[][] matrix = new char[40][94];
-		for(i=0;i<40;i++)
+		
+		char[][] matrix = new char[matrixHeight][matrixWidth];
+		for(i=0;i<matrixHeight;i++)
 		{
-			for(j=0;j<94;j++)
+			for(j=0;j<matrixWidth;j++)
 			{
 				matrix[i][j] = ' ';
 			}
@@ -154,9 +157,9 @@ public class Share
 			}
 		}
 		
-		for(i=0;i<40;i++)
+		for(i=0;i<matrixHeight;i++)
 		{
-			for(j=0;j<94;j++)
+			for(j=0;j<matrixWidth;j++)
 			{
 				System.out.print(matrix[i][j]);
 			}
