@@ -37,101 +37,72 @@ public class MyHashtable
 	}
 	
 	
-	public boolean addEntry(MyHashtable nameTable,MyHashtable kuerzelTable,String name,String kuerzel)
+	public boolean addEntry(Entry entry,String toHash)
 	{
-		boolean added = false;
 		int i = 0;
-		Entry entry = new Entry(name,kuerzel);
 		
-		int hashValue = hash(name);
-		int hashValue2 = hash(kuerzel);
+		int hashValue = hash(toHash);
 		
+		int found = searchEntry(toHash);
 		
-		while(!added)
+		if(found >= 0)
 		{
-			i++;
-			
-			if(nameTable.table[hashValue] == null)
-			{
-				nameTable.table[hashValue] = entry;
-				added = true;
-			}
-			else if(nameTable.table[hashValue].isDeleted())
-			{
-				nameTable.table[hashValue] = entry;
-				added = true;
-			}
-			else if(nameTable.table[hashValue].getName() == name || nameTable.table[hashValue].getKuerzel() == name)
-			{
-				System.out.println("Entry already exists. If you want to update the data use the 'import' function\n");
-				return false;
-			}
-			else
-			{
-				hashValue += i*i;
-			}
-		}
-		
-		i = 0;
-		
-		added = false;
-		
-		
-		while(!added)
-		{
-			i++;
-			
-			if(kuerzelTable.table[hashValue2] == null)
-			{
-				kuerzelTable.table[hashValue2] = entry;
-				added = true;
-			}
-			else if(kuerzelTable.table[hashValue2].isDeleted())
-			{
-				kuerzelTable.table[hashValue2] = entry;
-				added = true;
-			}
-			else if(kuerzelTable.table[hashValue2].getName() == name || kuerzelTable.table[hashValue2].getKuerzel() == name)
-			{
-				System.out.println("Entry already exists. If you want to update the data use the 'import' function\n");
-				return false;
-			}
-			else
-			{
-				hashValue2 += i*i;
-			}
-		}
-		
-		
-		if(nameTable.table[hashValue].equals(kuerzelTable.table[hashValue2]))
-		{
-			return true;
+			System.out.println("Entry already exists. If you want to update the data use the 'import' function\n");
+			return false;
 		}
 		else
 		{
-			return false;
+			while(true)
+			{
+				i++;
+				
+				if(table[hashValue] == null)
+				{
+					table[hashValue] = entry;
+					System.out.println("Entry added\n");
+					return true;
+				}
+				else if(table[hashValue].isDeleted())
+				{
+					table[hashValue] = entry;
+					System.out.println("Entry added\n");
+					return true;
+				}
+				else
+				{
+					hashValue += i*i;
+				}
+			}
 		}
+		
+		
+		
 	}
 	
-	public void deleteEntry(MyHashtable nameTable,String name)
+	public boolean deleteEntry(String name)
 	{
-		int hashValue = searchEntry(nameTable,name);
+		int hashValue = searchEntry(name);
+		
 		if(hashValue == -2)
 		{
 			System.out.println("Entry was not found\n");
+			return false;
 		}
 		else if(hashValue == -1)
 		{
-			System.out.println("Entry already deleted\n");
+			System.out.println("Entry was already deleted\n");
+			return false;
 		}
 		else
 		{
-			nameTable.table[hashValue].deleteShare();
+			table[hashValue].deleteShare();
+			System.out.println("Entry is now deleted\n");
+			return true;
 		}
 		
 	}
 	
-	public int searchEntry(MyHashtable nameTable,String name)
+	public int searchEntry(String name)
 	{
 		int i = 0;
 		int hashValue = hash(name);
@@ -139,14 +110,14 @@ public class MyHashtable
 		while(true)
 		{
 			hashValue += i*i;
-			if(nameTable.table[hashValue] == null)
+			if(table[hashValue] == null)
 			{
 				return -2;
 			}
 			
-			if(nameTable.table[hashValue].getName() == name || nameTable.table[hashValue].getKuerzel() == name)
+			if(table[hashValue].getName() == name || table[hashValue].getKuerzel() == name)
 			{
-				if(nameTable.table[hashValue].isDeleted())
+				if(table[hashValue].isDeleted())
 				{
 					return -1;
 				}
