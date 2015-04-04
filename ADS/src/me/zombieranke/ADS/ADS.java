@@ -9,6 +9,8 @@ public class ADS {
 	
 	static MyHashtable nameTable;
 	static MyHashtable shortNameTable;
+	
+	private enum Mode{NAME,SHORT_NAME}; 
 
 	public static void main(String[] args) throws IOException, ParseException
 	{
@@ -100,15 +102,14 @@ public class ADS {
 	
 	private static void del(Scanner sc)
 	{
-		System.out.println("Do want you want to delete according to name(1) or to short name(2)?");
-		String option = sc.nextLine();
+		Mode mode = evaluateMode(sc);
 		System.out.println("What share would you like to delete?");
 		String toDelete = sc.nextLine();
-		if(option.equalsIgnoreCase("name") || option.equalsIgnoreCase("1"))
+		if(mode == Mode.NAME)
 		{
 			nameTable.deleteEntry(toDelete);
 		}
-		else if(option.equalsIgnoreCase("short name") || option.equalsIgnoreCase("2") || option.equalsIgnoreCase("shortname"))
+		else if(mode == Mode.SHORT_NAME)
 		{
 			shortNameTable.deleteEntry(toDelete);
 		}
@@ -116,44 +117,107 @@ public class ADS {
 	
 	private static void importData(Scanner sc) throws IOException, ParseException
 	{
-		System.out.println("Do want you want to import according to name(1) or to short name(2)?");
-		String option = sc.nextLine();
+		Mode mode = evaluateMode(sc);
 		System.out.println("What share would you like to import?");
 		String toImport = sc.nextLine();
 		System.out.println("Please specify the exact Path to the csv file you want to import: ");
 		String path = sc.nextLine();
 		Share share = new Share();
 		share.importCsv(path);
-		if(option.equalsIgnoreCase("name") || option.equalsIgnoreCase("1"))
+		if(mode == Mode.NAME)
 		{
-			//nameTable.importShare(share,toImport);
+			nameTable.importShareData(share,toImport);
 		}
-		else if(option.equalsIgnoreCase("short name") || option.equalsIgnoreCase("2") || option.equalsIgnoreCase("shortname"))
+		else if(mode == Mode.SHORT_NAME)
 		{
-			//shortNameTable.importShare(share, toImport);
+			shortNameTable.importShareData(share, toImport);
 		}
 	}
 	
 	private static void search(Scanner sc)
 	{
-		System.out.println("Do want you want to search according to name(1) or to short name(2)?");
-		String option = sc.nextLine();
-		System.out.println("What share would you like to import?");
-		String toImport = sc.nextLine();
+		Mode mode = evaluateMode(sc);
+		System.out.println("Do want you want a full report(1) or only the most recent(2)?");
+		String reportOption = sc.nextLine();
+		System.out.println("What share would you like to search for?");
+		String toSearch = sc.nextLine();
+		if(mode == Mode.NAME)
+		{
+			if(reportOption.equalsIgnoreCase("full") || reportOption.equalsIgnoreCase("full report") || reportOption.equalsIgnoreCase("fullreport") || reportOption.equalsIgnoreCase("1"))
+			{
+				nameTable.printEntry(toSearch);
+			}
+			else if(reportOption.equalsIgnoreCase("recent") || reportOption.equalsIgnoreCase("recent report") || reportOption.equalsIgnoreCase("recentreport") || reportOption.equalsIgnoreCase("2"))
+			{
+				nameTable.printLatestEntry(toSearch);
+			}
+			else
+			{
+				System.out.println("Not a valid report option");
+			}
+		}
+		else if(mode == Mode.SHORT_NAME)
+		{
+			if(reportOption.equalsIgnoreCase("full") || reportOption.equalsIgnoreCase("full report") || reportOption.equalsIgnoreCase("fullreport") || reportOption.equalsIgnoreCase("1"))
+			{
+				shortNameTable.printEntry(toSearch);
+			}
+			else if(reportOption.equalsIgnoreCase("recent") || reportOption.equalsIgnoreCase("recent report") || reportOption.equalsIgnoreCase("recentreport") || reportOption.equalsIgnoreCase("2"))
+			{
+				shortNameTable.printLatestEntry(toSearch);
+			}
+			else
+			{
+				System.out.println("Not a valid report option");
+			}
+		}
 	}
 	
 	private static void plot(Scanner sc)
 	{
-		
+		Mode mode = evaluateMode(sc);
+		System.out.println("What share would you like to plot?");
+		String toPlot = sc.nextLine();
+		if(mode == Mode.NAME)
+		{
+			nameTable.plotEntry(toPlot);
+		}
+		else if(mode == Mode.SHORT_NAME)
+		{
+			shortNameTable.plotEntry(toPlot);
+		}
 	}
 	
 	private static void save(Scanner sc)
 	{
-		
+		nameTable.save("nameTable");
+		shortNameTable.save("shortNameTable");
 	}
 	
 	private static void load(Scanner sc)
 	{
-		
+		nameTable = MyHashtable.load("nameTable");
+		shortNameTable = MyHashtable.load("shortNameTable");
+	}
+	
+	private static Mode evaluateMode(Scanner sc)
+	{
+		while(true)
+		{
+			System.out.println("Do want you want to search according to name(1) or to short name(2)?");
+			String option = sc.nextLine();
+			if(option.equalsIgnoreCase("name") || option.equalsIgnoreCase("1"))
+			{
+				return Mode.NAME;
+			}
+			else if(option.equalsIgnoreCase("short name") || option.equalsIgnoreCase("2") || option.equalsIgnoreCase("shortname"))
+			{
+				return Mode.SHORT_NAME;
+			}
+			else
+			{
+				System.out.println("Not a valid name option");
+			}
+		}
 	}
 }

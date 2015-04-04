@@ -102,6 +102,28 @@ public class MyHashtable
 		
 	}
 	
+	public boolean importShareData(Share share, String toImport)
+	{
+		int hashValue = searchEntry(toImport);
+		
+		if(hashValue == -2)
+		{
+			System.out.println("Entry was not found\n");
+			return false;
+		}
+		else if(hashValue == -1)
+		{
+			System.out.println("Entry was already deleted\n");
+			return false;
+		}
+		else
+		{
+			table[hashValue].importShare(share);
+			return true;
+		}
+	
+	}
+	
 	public int searchEntry(String name)
 	{
 		int i = 0;
@@ -187,8 +209,15 @@ public class MyHashtable
 		}
 	}
 	
+	public void save(String nameOfFile)
+	{
+		
+	}
 	
-	
+	public static MyHashtable load(String nameOfFile)
+	{
+		return null;
+	}
 }
 
 
