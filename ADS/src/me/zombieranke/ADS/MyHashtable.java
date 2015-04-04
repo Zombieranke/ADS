@@ -15,7 +15,7 @@ public class MyHashtable implements Serializable
 	 * Random serial to identify class type
 	 */
 	private static final long serialVersionUID = -6414770308414785767L;
-	private static final int hashPrimeNumber = 10007;
+	private static final int hashPrimeNumber = 4001;
 	private static final int alphabetLength = 128;
 	private Entry[] table;
 	
