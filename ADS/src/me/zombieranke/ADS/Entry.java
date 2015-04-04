@@ -14,6 +14,11 @@ public class Entry
 		deletedFlag = false;
 	}
 	
+	public void importShare()
+	{
+		
+	}
+	
 	public void deleteShare()
 	{
 		share = null;
