@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 public class Entry implements Serializable
 {
+	/**Automatically generated id to identify class at load*/
+	private static final long serialVersionUID = -1198101165367088077L;
 	private String name;
 	private String shortName;
 	private String wkn;
@@ -49,13 +51,27 @@ public class Entry implements Serializable
 	public void print()
 	{
 		System.out.println("Name: " + name + ", Short name: " + shortName + ", WKN: " + wkn);
+		if(share == null)
+		{
+			System.out.println("Entry has no data yet. If you want to update the data use the 'IMPORT' function\n");
+		}
+		else
+		{
 		share.print();
+		}
 	}
 	
 	public void printLatest()
 	{
 		System.out.println("Name: " + name + ", Short name: " + shortName + ", WKN: " + wkn);
-		share.printLatest();
+		if(share == null)
+		{
+			System.out.println("Entry has no data yet. If you want to update the data use the 'IMPORT' function\n");
+		}
+		else
+		{
+			share.printLatest();
+		}
 	}
 	
 	public void plotShare()

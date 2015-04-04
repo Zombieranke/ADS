@@ -5,6 +5,7 @@ import java.text.ParseException;
 import java.util.Locale;
 import java.util.Scanner;
 
+/**Main procedure for our */
 public class ADS {
 	
 	static MyHashtable nameTable;
@@ -99,7 +100,7 @@ public class ADS {
 		
 		Entry toAdd = new Entry(name,shortName,wkn);
 		
-		worked =nameTable.addEntry(toAdd,name);
+		worked = nameTable.addEntry(toAdd,name);
 		worked2 = shortNameTable.addEntry(toAdd,shortName);
 		if(worked && worked2)
 		{
@@ -203,13 +204,31 @@ public class ADS {
 	
 	private static void save(Scanner sc)
 	{
-		nameTable.save("nameTable");
+		if(nameTable == null)
+		{
+			System.out.println("There is nothing to save");
+		}
+		else
+		{
+			System.out.println("Specify the filename you want to save your data in: ");
+			String fileName = sc.nextLine();
+			nameTable.save(fileName);
+		}
 	}
 	
 	private static void load(Scanner sc)
 	{
-		nameTable = MyHashtable.load("nameTable");
+		System.out.println("Specify the filename you want to load your data from: ");
+		String fileName = sc.nextLine();
+		nameTable = MyHashtable.load(fileName);
+		if(nameTable == null)
+		{
+			System.out.println("Loading failed!");
+		}
+		else
+		{
 		shortNameTable = nameTable.createShortNameHashtable();
+		}
 	}
 	
 	private static Mode evaluateMode(Scanner sc)
