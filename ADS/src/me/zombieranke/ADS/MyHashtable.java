@@ -47,7 +47,7 @@ public class MyHashtable
 		
 		if(found >= 0)
 		{
-			System.out.println("Entry already exists. If you want to update the data use the 'import' function\n");
+			System.out.println("Entry already exists. If you want to update the data use the 'IMPORT' function\n");
 			return false;
 		}
 		else
@@ -115,7 +115,7 @@ public class MyHashtable
 				return -2;
 			}
 			
-			if(table[hashValue].getName() == name || table[hashValue].getKuerzel() == name)
+			if(table[hashValue].getName() == name || table[hashValue].getShortName() == name)
 			{
 				if(table[hashValue].isDeleted())
 				{
@@ -130,6 +130,60 @@ public class MyHashtable
 			{
 				i++;
 			}
+		}
+	}
+	
+	public void plotEntry(String name)
+	{
+		int hashValue = searchEntry(name);
+		
+		if(hashValue == -2)
+		{
+			System.out.println("Entry was not found\n");
+		}
+		else if(hashValue == -1)
+		{
+			System.out.println("Entry was already deleted\n");
+		}
+		else
+		{
+			table[hashValue].plotShare();
+		}
+	}
+	
+	public void printLatestEntry(String name)
+	{
+		int hashValue = searchEntry(name);
+		
+		if(hashValue == -2)
+		{
+			System.out.println("Entry was not found\n");
+		}
+		else if(hashValue == -1)
+		{
+			System.out.println("Entry was already deleted\n");
+		}
+		else
+		{
+			table[hashValue].printLatest();
+		}
+	}
+	
+	public void printEntry(String name)
+	{
+		int hashValue = searchEntry(name);
+		
+		if(hashValue == -2)
+		{
+			System.out.println("Entry was not found\n");
+		}
+		else if(hashValue == -1)
+		{
+			System.out.println("Entry was already deleted\n");
+		}
+		else
+		{
+			table[hashValue].print();
 		}
 	}
 	
