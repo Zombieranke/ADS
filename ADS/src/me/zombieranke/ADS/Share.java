@@ -104,7 +104,7 @@ public class Share
 		int stepX = 3;
 		double matrixMin = min - 3*stepY;
 		
-		char[][] matrix = new char[94][40];
+		char[][] matrix = new char[40][94];
 		for(i=0;i<40;i++)
 		{
 			for(j=0;j<94;j++)
