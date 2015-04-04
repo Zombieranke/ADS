@@ -83,7 +83,7 @@ public class Share
 		{
 			if(date[i] ==  null)
 			{
-				loopCount = i;
+				loopCount = i - 1;
 				break;
 			}
 			else
@@ -152,6 +152,15 @@ public class Share
 				daysSkippedTotal++;
 				i--;
 			}
+		}
+		
+		for(i=0;i<40;i++)
+		{
+			for(j=0;j<94;j++)
+			{
+				System.out.print(matrix[i][j]);
+			}
+			System.out.print("\n");
 		}
 		
 	}
