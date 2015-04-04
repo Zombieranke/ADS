@@ -160,15 +160,8 @@ public class Share implements Serializable
 						j = 2;
 					}
 					x = 2 + stepX*i + stepX*daysSkippedTotal + j - stepX;
-					y = (int) Math.round( (   (   (deltaY/(deltaX*stepX))*j + (deltaY/(deltaX))*(daysSkipped)) + close[i-1] - matrixMin)/stepY);
-					System.out.println("tempForTimeInMillis: " + tempForTimeInMillis);
-					System.out.println("deltaX: " + deltaX + "   detaY: " + deltaY);
-					System.out.println("x: " + x + "   y: " + y);
+					y = (int) Math.round( ( ( (deltaY/(deltaX*stepX))*j + (deltaY/(deltaX))*(daysSkipped)) + close[i-1] - matrixMin)/stepY);
 
-					if(y>=39)
-					{
-						y = 39;
-					}
 					matrix[y][x] = '.';
 				}
 			}
