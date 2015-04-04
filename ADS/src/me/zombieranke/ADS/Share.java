@@ -126,7 +126,8 @@ public class Share implements Serializable
 		}
 		
 		Date lastDate = turnedAround[0];
-	
+
+		
 		Calendar lastTime = new GregorianCalendar();
 		lastTime.setTime(lastDate);
 		
@@ -140,25 +141,34 @@ public class Share implements Serializable
 		double deltaX = 0;
 		double deltaY = 0;
 		
-		for(i=0;i<loopCount;i++)
+		
+		for(i=0;i<loopCount-1;i++)
 		{
 			temp.setTime(turnedAround[i]);
 			
 			if(i>0)
 			{
 				lastTime.setTime(turnedAround[i-1]);
-				tempForTimeInMillis = temp.getTimeInMillis()-lastTime.getTimeInMillis();
+				tempForTimeInMillis = temp.getTimeInMillis() - lastTime.getTimeInMillis();
 				deltaX = (double)(tempForTimeInMillis/86400000);
-				deltaY = close[i-1] - close[i];
+				deltaY = close[i] - close[i-1];
 				
-				for(j=1;j<stepX-1;j++)
+				for(j=0;j<stepX;j++)
 				{
+					if(!(daysSkipped > 0) && j==0)
+					{
+						j = 2;
+					}
 					x = 2 + stepX*i + stepX*daysSkippedTotal + j - stepX;
-					y = (int) Math.round((((deltaY/deltaX)*j*(1+daysSkipped))/stepY) + close[i-1]);
-					System.out.println("tempForTimeinMillis: "+ tempForTimeInMillis + "   i: " + i);
+					y = (int) Math.round( (   (   (deltaY/(deltaX*stepX))*j + (deltaY/(deltaX))*(daysSkipped)) + close[i-1] - matrixMin)/stepY);
+					System.out.println("tempForTimeInMillis: " + tempForTimeInMillis);
+					System.out.println("deltaX: " + deltaX + "   detaY: " + deltaY);
+					System.out.println("x: " + x + "   y: " + y);
 
-					//	System.out.println("deltaY: "+ deltaY + "   deltaX: " + deltaX + "   (deltaY/deltaX): " + (deltaY/deltaX) + "    close[i-1]: " + close[i-1]);
-					
+					if(y>=39)
+					{
+						y = 39;
+					}
 					matrix[y][x] = '.';
 				}
 			}
@@ -172,7 +182,7 @@ public class Share implements Serializable
 				matrix[y][x] = 'X';
 				matrix[y][x+1] = ']';
 				
-				lastTime = temp;
+				lastTime.setTime(turnedAround[i]);
 				daysSkipped = 0;
 			}
 			else
@@ -192,7 +202,7 @@ public class Share implements Serializable
 			System.out.print("\n");
 		}
 		
-		DateFormat df = new SimpleDateFormat("dd-MM", Locale.ENGLISH);
+		
 		
 		
 	}
