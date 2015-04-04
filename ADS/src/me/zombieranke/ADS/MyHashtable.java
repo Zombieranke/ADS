@@ -38,14 +38,23 @@ public class MyHashtable implements Serializable
 		int length = name.length();
 		int i = 0;
 		
-		int sum = nameChar[0];
-		
-		for(i=1;i<length-1;i++)
+		if(nameChar.length>0)
 		{
-			sum = (sum * alphabetLength + nameChar[i]) % hashPrimeNumber;
+			int sum = nameChar[0];
+			
+			for(i=1;i<length-1;i++)
+			{
+				sum = (sum * alphabetLength + nameChar[i]) % hashPrimeNumber;
+			}
+			
+			return sum;
+		}
+		else
+		{
+			System.out.println("Specified name was empty! Aborting");
+			return -1;
 		}
 		
-		return sum;
 	}
 	
 	
@@ -54,6 +63,11 @@ public class MyHashtable implements Serializable
 		int i = 0;
 		
 		int hashValue = hash(toHash);
+		
+		if(hashValue == -1)
+		{
+			return false;
+		}
 		
 		int found = searchEntry(toHash);
 		
@@ -92,20 +106,25 @@ public class MyHashtable implements Serializable
 	{
 		int hashValue = searchEntry(name);
 		
+		if(hashValue == -3)
+		{
+			return false;
+		}
+		
 		if(hashValue == -2)
 		{
-			System.out.println("Entry was not found\n");
+			System.out.println("Entry was not found");
 			return false;
 		}
 		else if(hashValue == -1)
 		{
-			System.out.println("Entry was already deleted\n");
+			System.out.println("Entry was already deleted");
 			return false;
 		}
 		else
 		{
 			table[hashValue].deleteShare();
-			System.out.println("Entry is now deleted\n");
+			System.out.println("Entry is now deleted");
 			return true;
 		}
 		
@@ -115,14 +134,19 @@ public class MyHashtable implements Serializable
 	{
 		int hashValue = searchEntry(toImport);
 		
+		if(hashValue == -3)
+		{
+			return false;
+		}
+		
 		if(hashValue == -2)
 		{
-			System.out.println("Entry was not found\n");
+			System.out.println("Entry was not found");
 			return false;
 		}
 		else if(hashValue == -1)
 		{
-			System.out.println("Entry was already deleted\n");
+			System.out.println("Entry was already deleted");
 			return false;
 		}
 		else
@@ -137,6 +161,11 @@ public class MyHashtable implements Serializable
 	{
 		int i = 0;
 		int hashValue = hash(name);
+		
+		if(hashValue == -1)
+		{
+			return -3;
+		}
 		
 		while(true)
 		{
@@ -168,13 +197,18 @@ public class MyHashtable implements Serializable
 	{
 		int hashValue = searchEntry(name);
 		
+		if(hashValue == -3)
+		{
+			return;
+		}
+		
 		if(hashValue == -2)
 		{
-			System.out.println("Entry was not found\n");
+			System.out.println("Entry was not found");
 		}
 		else if(hashValue == -1)
 		{
-			System.out.println("Entry was already deleted\n");
+			System.out.println("Entry was already deleted");
 		}
 		else
 		{
@@ -186,13 +220,18 @@ public class MyHashtable implements Serializable
 	{
 		int hashValue = searchEntry(name);
 		
+		if(hashValue == -3)
+		{
+			return;
+		}
+		
 		if(hashValue == -2)
 		{
-			System.out.println("Entry was not found\n");
+			System.out.println("Entry was not found");
 		}
 		else if(hashValue == -1)
 		{
-			System.out.println("Entry was already deleted\n");
+			System.out.println("Entry was already deleted");
 		}
 		else
 		{
@@ -204,13 +243,18 @@ public class MyHashtable implements Serializable
 	{
 		int hashValue = searchEntry(name);
 		
+		if(hashValue == -3)
+		{
+			return;
+		}
+		
 		if(hashValue == -2)
 		{
-			System.out.println("Entry was not found\n");
+			System.out.println("Entry was not found");
 		}
 		else if(hashValue == -1)
 		{
-			System.out.println("Entry was already deleted\n");
+			System.out.println("Entry was already deleted");
 		}
 		else
 		{
@@ -247,7 +291,7 @@ public class MyHashtable implements Serializable
 			out.writeObject(this);
 			out.close();
 			fileOut.close();
-			System.out.printf("Serialized data is saved in save/" + nameOfFile + ".ser");
+			System.out.println("Serialized data is saved in save/" + nameOfFile + ".ser");
 		}
 		catch(IOException i)
 		{
@@ -258,24 +302,27 @@ public class MyHashtable implements Serializable
 	public static MyHashtable load(String nameOfFile)
 	{
 		MyHashtable hashTable;
-		 try
-	      {
-	         FileInputStream fileIn = new FileInputStream("save/" + nameOfFile + ".ser");
-	         ObjectInputStream in = new ObjectInputStream(fileIn);
-	         hashTable = (MyHashtable) in.readObject();
-	         in.close();
-	         fileIn.close();
-	      }catch(IOException i)
-	      {
-	         i.printStackTrace();
-	         return null;
-	      }catch(ClassNotFoundException c)
-	      {
-	         System.out.println("Could not load Hashtable");
-	         c.printStackTrace();
-	         return null;
-	      }
-		 return hashTable;
+		try
+		{
+			FileInputStream fileIn = new FileInputStream("save/" + nameOfFile + ".ser");
+			ObjectInputStream in = new ObjectInputStream(fileIn);
+			hashTable = (MyHashtable) in.readObject();
+			in.close();
+			fileIn.close();
+		}
+		catch(IOException i)
+		{
+			System.out.println("Could not load Hashtable");
+			i.printStackTrace();
+			return null;
+		}
+		catch(ClassNotFoundException c)
+		{
+			System.out.println("Could not load Hashtable");
+			c.printStackTrace();
+			return null;
+		}
+	return hashTable;
 	}
 }
 
