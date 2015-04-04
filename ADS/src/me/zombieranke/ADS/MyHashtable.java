@@ -1,6 +1,6 @@
 package me.zombieranke.ADS;
 
-public class myHashtable
+public class MyHashtable
 {
 
 	private static final int hashPrimeNumber = 10007;
@@ -8,7 +8,7 @@ public class myHashtable
 	private Entry[] table;
 	
 	
-	public myHashtable()
+	public MyHashtable()
 	{
 		int i = 0;
 		table = new Entry[hashPrimeNumber];
@@ -37,7 +37,7 @@ public class myHashtable
 	}
 	
 	
-	public boolean addEntry(myHashtable nameTable,myHashtable kuerzelTable,String name,String kuerzel)
+	public boolean addEntry(MyHashtable nameTable,MyHashtable kuerzelTable,String name,String kuerzel)
 	{
 		boolean added = false;
 		int i = 0;
@@ -113,7 +113,7 @@ public class myHashtable
 		}
 	}
 	
-	public void deleteEntry(myHashtable nameTable,String name)
+	public void deleteEntry(MyHashtable nameTable,String name)
 	{
 		int hashValue = searchEntry(nameTable,name);
 		if(hashValue == -2)
@@ -131,7 +131,7 @@ public class myHashtable
 		
 	}
 	
-	public int searchEntry(myHashtable nameTable,String name)
+	public int searchEntry(MyHashtable nameTable,String name)
 	{
 		int i = 0;
 		int hashValue = hash(name);

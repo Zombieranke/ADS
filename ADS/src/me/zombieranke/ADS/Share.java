@@ -14,7 +14,7 @@ import com.csvreader.CsvReader;
 public class Share
 {
 	private String name;
-	private String kuerzel;
+	private String shortName;
 	private String wkn;
 	
 	private Date date[];
@@ -29,13 +29,13 @@ public class Share
 	 * Default Constructor for a Share
 	 * 
 	 * @param name The full name of the share
-	 * @param kuerzel The short name of the share
+	 * @param shortName The short name of the share
 	 * @param wkn The Wertpapierkennummer of the share
 	 */
-	public Share(String name, String kuerzel, String wkn)
+	public Share(String name, String shortName, String wkn)
 	{
 		this.name = name;
-		this.kuerzel = kuerzel;
+		this.shortName = shortName;
 		this.wkn = wkn;
 		
 		date = new Date[30];
@@ -83,13 +83,35 @@ public class Share
 		int i;
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
 		
+		System.out.println("Name: " + name + ", Short Name: " + shortName + ", WKN: " + wkn);
+		
 		for(i = 0;i<date.length;i++)
 		{
 			if(date[i] ==  null)
 			{
+				if(i==0)
+				{
+					System.out.println("Share is empty! Please import data.");
+				}
 				break;
 			}
 			System.out.println("Date: " + df.format(date[i]) + ", Open: " + open[i] + ", High: " + high[i] + ", Low: " + low[i] + ", Close: " + close[i] + ", Volume: " + volume[i] + ", Adj Close: " + adj_close[i]);
 		}
-	}	
+	}
+	
+	public void printLatest()
+	{
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.ROOT);
+		
+		System.out.println("Name: " + name + ", Short name: " + shortName + ", WKN: " + wkn);
+		if(date[0] !=  null)
+		{
+			System.out.println("Date: " + df.format(date[0]) + ", Open: " + open[0] + ", High: " + high[0] + ", Low: " + low[0] + ", Close: " + close[0] + ", Volume: " + volume[0] + ", Adj Close: " + adj_close[0]);
+
+		}
+		else
+		{
+			System.out.println("Share is empty! Please import data.");
+		}
+	}
 }
