@@ -11,6 +11,10 @@ import java.io.Serializable;
 public class MyHashtable implements Serializable
 {
 
+	/**
+	 * Random serial to identify class type
+	 */
+	private static final long serialVersionUID = -6414770308414785767L;
 	private static final int hashPrimeNumber = 10007;
 	private static final int alphabetLength = 128;
 	private Entry[] table;
@@ -215,6 +219,21 @@ public class MyHashtable implements Serializable
 		{
 			table[hashValue].print();
 		}
+	}
+	
+	public MyHashtable createShortNameHashtable()
+	{
+		MyHashtable hashtable = new MyHashtable();
+		
+		for(Entry e: table)
+		{
+			if(e != null)
+			{
+				hashtable.addEntry(e, e.getShortName());
+			}
+		}
+		
+		return hashtable;
 	}
 	
 	public void save(String nameOfFile)

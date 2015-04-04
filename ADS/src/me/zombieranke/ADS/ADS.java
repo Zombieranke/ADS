@@ -191,13 +191,12 @@ public class ADS {
 	private static void save(Scanner sc)
 	{
 		nameTable.save("nameTable");
-		shortNameTable.save("shortNameTable");
 	}
 	
 	private static void load(Scanner sc)
 	{
 		nameTable = MyHashtable.load("nameTable");
-		shortNameTable = MyHashtable.load("shortNameTable");
+		shortNameTable = nameTable.createShortNameHashtable();
 	}
 	
 	private static Mode evaluateMode(Scanner sc)
