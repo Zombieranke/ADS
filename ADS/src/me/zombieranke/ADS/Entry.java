@@ -19,6 +19,7 @@ public class Entry
 	public void importShare(Share share)
 	{
 		this.share = share;
+		deletedFlag = false;
 	}
 	
 	public void deleteShare()
