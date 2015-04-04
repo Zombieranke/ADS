@@ -1,6 +1,14 @@
 package me.zombieranke.ADS;
 
-public class MyHashtable
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+
+public class MyHashtable implements Serializable
 {
 
 	private static final int hashPrimeNumber = 10007;
@@ -211,12 +219,47 @@ public class MyHashtable
 	
 	public void save(String nameOfFile)
 	{
-		
+		try
+		{
+			File savedir = new File("save/");
+			if(!savedir.exists())
+			{
+				savedir.mkdir();
+			}
+			FileOutputStream fileOut = new FileOutputStream(new File(savedir,nameOfFile + ".ser"));
+			ObjectOutputStream out = new ObjectOutputStream(fileOut);
+			out.writeObject(this);
+			out.close();
+			fileOut.close();
+			System.out.printf("Serialized data is saved in save/" + nameOfFile + ".ser");
+		}
+		catch(IOException i)
+		{
+			i.printStackTrace();
+		}
 	}
 	
 	public static MyHashtable load(String nameOfFile)
 	{
-		return null;
+		MyHashtable hashTable;
+		 try
+	      {
+	         FileInputStream fileIn = new FileInputStream("save/" + nameOfFile + ".ser");
+	         ObjectInputStream in = new ObjectInputStream(fileIn);
+	         hashTable = (MyHashtable) in.readObject();
+	         in.close();
+	         fileIn.close();
+	      }catch(IOException i)
+	      {
+	         i.printStackTrace();
+	         return null;
+	      }catch(ClassNotFoundException c)
+	      {
+	         System.out.println("Could not load Hashtable");
+	         c.printStackTrace();
+	         return null;
+	      }
+		 return hashTable;
 	}
 }
 

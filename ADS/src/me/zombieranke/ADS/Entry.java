@@ -1,6 +1,8 @@
 package me.zombieranke.ADS;
 
-public class Entry
+import java.io.Serializable;
+
+public class Entry implements Serializable
 {
 	private String name;
 	private String shortName;
