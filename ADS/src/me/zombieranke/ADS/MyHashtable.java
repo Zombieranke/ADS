@@ -115,7 +115,7 @@ public class MyHashtable
 				return -2;
 			}
 			
-			if(table[hashValue].getName() == name || table[hashValue].getShortName() == name)
+			if(table[hashValue].getName().equalsIgnoreCase(name) || table[hashValue].getShortName().equalsIgnoreCase(name))
 			{
 				if(table[hashValue].isDeleted())
 				{

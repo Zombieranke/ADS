@@ -17,7 +17,7 @@ public class ADS {
 		sc.close();
 	}
 	
-	private static boolean menu(Scanner sc)
+	private static boolean menu(Scanner sc) throws IOException, ParseException
 	{
 		printMenu();
 		String option = sc.nextLine();
@@ -114,25 +114,32 @@ public class ADS {
 		}
 	}
 	
-	private static void importData(Scanner sc)
+	private static void importData(Scanner sc) throws IOException, ParseException
 	{
 		System.out.println("Do want you want to import according to name(1) or to short name(2)?");
 		String option = sc.nextLine();
 		System.out.println("What share would you like to import?");
-		String toDelete = sc.nextLine();
+		String toImport = sc.nextLine();
+		System.out.println("Please specify the exact Path to the csv file you want to import: ");
+		String path = sc.nextLine();
+		Share share = new Share();
+		share.importCsv(path);
 		if(option.equalsIgnoreCase("name") || option.equalsIgnoreCase("1"))
 		{
-			nameTable.deleteEntry(toDelete);
+			//nameTable.importShare(share,toImport);
 		}
 		else if(option.equalsIgnoreCase("short name") || option.equalsIgnoreCase("2") || option.equalsIgnoreCase("shortname"))
 		{
-			shortNameTable.deleteEntry(toDelete);
+			//shortNameTable.importShare(share, toImport);
 		}
 	}
 	
 	private static void search(Scanner sc)
 	{
-		
+		System.out.println("Do want you want to search according to name(1) or to short name(2)?");
+		String option = sc.nextLine();
+		System.out.println("What share would you like to import?");
+		String toImport = sc.nextLine();
 	}
 	
 	private static void plot(Scanner sc)
