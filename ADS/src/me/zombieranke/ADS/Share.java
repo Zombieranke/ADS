@@ -102,7 +102,7 @@ public class Share implements Serializable
 		
 		
 		double stepY = (max - min)/34;
-		int stepX = 5;
+		int stepX = 7;
 		double matrixMin = min - 3*stepY;
 		int matrixWidth = 30*stepX+4;
 		int matrixHeight = 40;
@@ -136,16 +136,32 @@ public class Share implements Serializable
 		
 		int x = 0;
 		int y = 0;
+		double deltaX = 0;
+		double deltaY = 0;
 		
 		for(i=0;i<loopCount;i++)
 		{
 			temp.setTime(turnedAround[i]);
+			if(i>0)
+			{
+				deltaX = (double)((temp.getTimeInMillis()-lastTime.getTimeInMillis())/86400000);
+				deltaY = close[i-1] - close[i];
+			}
+			
+			for(j=0;j<stepX;j++)
+			{
+				
+			}
+			
+			
 			
 			if(temp.getTimeInMillis() <= lastTime.getTimeInMillis() + 86400000 * (1+daysSkipped))
 			{
 				x = 2 + stepX*i + stepX*daysSkippedTotal;
 				y = (int) Math.round((close[i] - matrixMin)/stepY);
+				matrix[y][x-1] = '[';
 				matrix[y][x] = 'X';
+				matrix[y][x+1] = ']';
 				
 				lastTime = temp;
 				daysSkipped = 0;
@@ -166,6 +182,9 @@ public class Share implements Serializable
 			}
 			System.out.print("\n");
 		}
+		
+		DateFormat df = new SimpleDateFormat("dd-MM", Locale.ENGLISH);
+		
 		
 	}
 	

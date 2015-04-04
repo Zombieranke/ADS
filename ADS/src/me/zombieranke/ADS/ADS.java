@@ -76,6 +76,9 @@ public class ADS {
 	
 	private static void add(Scanner sc)
 	{
+		boolean worked = false;
+		boolean worked2 = false;
+		
 		System.out.println("Enter the full name of the share: ");
 		String name = sc.nextLine();
 		System.out.println("Enter the short name: ");
@@ -96,8 +99,18 @@ public class ADS {
 		
 		Entry toAdd = new Entry(name,shortName,wkn);
 		
-		nameTable.addEntry(toAdd,name);
-		shortNameTable.addEntry(toAdd,shortName);
+		worked =nameTable.addEntry(toAdd,name);
+		worked2 = shortNameTable.addEntry(toAdd,shortName);
+		if(worked && worked2)
+		{
+			System.out.println("Entry added\n");
+		}
+		else
+		{
+			System.out.println("Entry already exists. If you want to update the data use the 'IMPORT' function\n");
+		}
+		
+		
 	}
 	
 	private static void del(Scanner sc)

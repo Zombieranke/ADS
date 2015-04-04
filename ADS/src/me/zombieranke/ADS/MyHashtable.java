@@ -59,7 +59,6 @@ public class MyHashtable implements Serializable
 		
 		if(found >= 0)
 		{
-			System.out.println("Entry already exists. If you want to update the data use the 'IMPORT' function\n");
 			return false;
 		}
 		else
@@ -71,13 +70,11 @@ public class MyHashtable implements Serializable
 				if(table[hashValue] == null)
 				{
 					table[hashValue] = entry;
-					System.out.println("Entry added\n");
 					return true;
 				}
 				else if(table[hashValue].isDeleted())
 				{
 					table[hashValue] = entry;
-					System.out.println("Entry added\n");
 					return true;
 				}
 				else
