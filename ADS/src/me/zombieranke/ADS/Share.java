@@ -102,7 +102,7 @@ public class Share implements Serializable
 		
 		
 		double stepY = (max - min)/34;
-		int stepX = 7;
+		int stepX = 10;
 		double matrixMin = min - 3*stepY;
 		int matrixWidth = 30*stepX+4;
 		int matrixHeight = 40;
@@ -118,14 +118,16 @@ public class Share implements Serializable
 		}
 		
 		
-		Date[] turnedAround = new Date[loopCount];
+		Date[] turnedAroundDate = new Date[loopCount];
+		double[] turnedAroundClose = new double[loopCount];
 	
 		for(i=0;i<loopCount;i++)
 		{
-			turnedAround[i] = date[loopCount - i];
+			turnedAroundDate[i] = date[loopCount - i];
+			turnedAroundClose[i] = close[loopCount - i];
 		}
 		
-		Date lastDate = turnedAround[0];
+		Date lastDate = turnedAroundDate[0];
 
 		
 		Calendar lastTime = new GregorianCalendar();
@@ -144,14 +146,14 @@ public class Share implements Serializable
 		
 		for(i=0;i<loopCount-1;i++)
 		{
-			temp.setTime(turnedAround[i]);
+			temp.setTime(turnedAroundDate[i]);
 			
 			if(i>0)
 			{
-				lastTime.setTime(turnedAround[i-1]);
+				lastTime.setTime(turnedAroundDate[i-1]);
 				tempForTimeInMillis = temp.getTimeInMillis() - lastTime.getTimeInMillis();
 				deltaX = (double)(tempForTimeInMillis/86400000);
-				deltaY = close[i] - close[i-1];
+				deltaY = turnedAroundClose[i] - turnedAroundClose[i-1];
 				
 				for(j=0;j<stepX;j++)
 				{
@@ -160,7 +162,7 @@ public class Share implements Serializable
 						j = 2;
 					}
 					x = 2 + stepX*i + stepX*daysSkippedTotal + j - stepX;
-					y = (int) Math.round( ( ( (deltaY/(deltaX*stepX))*j + (deltaY/(deltaX))*(daysSkipped)) + close[i-1] - matrixMin)/stepY);
+					y = matrixHeight - (int) Math.round( ( ( (deltaY/(deltaX*stepX))*j + (deltaY/deltaX)*(daysSkipped)) + turnedAroundClose[i-1] - matrixMin)/stepY);
 
 					matrix[y][x] = '.';
 				}
@@ -170,12 +172,12 @@ public class Share implements Serializable
 			if(temp.getTimeInMillis() <= lastTime.getTimeInMillis() + 86400000 * (1+daysSkipped))
 			{
 				x = 2 + stepX*i + stepX*daysSkippedTotal;
-				y = (int) Math.round((close[i] - matrixMin)/stepY);
+				y = matrixHeight - (int) Math.round((turnedAroundClose[i] - matrixMin)/stepY);
 				matrix[y][x-1] = '[';
 				matrix[y][x] = 'X';
 				matrix[y][x+1] = ']';
 				
-				lastTime.setTime(turnedAround[i]);
+				lastTime.setTime(turnedAroundDate[i]);
 				daysSkipped = 0;
 			}
 			else
