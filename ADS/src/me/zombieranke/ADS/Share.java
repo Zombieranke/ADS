@@ -1,6 +1,5 @@
 package me.zombieranke.ADS;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -26,6 +25,13 @@ public class Share
 	private long volume[];
 	private double adj_close[];
 	
+	/**
+	 * Default Constructor for a Share
+	 * 
+	 * @param name The full name of the share
+	 * @param kuerzel The short name of the share
+	 * @param wkn The Wertpapierkennummer of the share
+	 */
 	public Share(String name, String kuerzel, String wkn)
 	{
 		this.name = name;
@@ -41,7 +47,7 @@ public class Share
 		adj_close = new double[30];
 	}
 	
-	void importCsv(String src) throws IOException, ParseException
+	public void importCsv(String src) throws IOException, ParseException
 	{
 		CsvReader reader = new CsvReader(src);
 		reader.readHeaders();
@@ -67,11 +73,23 @@ public class Share
 			c.setTime(date[i]);
 			first.setTime(date[0]);
 			differenceInMillis = first.getTimeInMillis() - c.getTimeInMillis();
+			i++;
 		}
 		while(reader.readRecord() && differenceInMillis < 2.6e9);
-
 	}
 	
-	
-	
+	public void print()
+	{
+		int i;
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+		
+		for(i = 0;i<date.length;i++)
+		{
+			if(date[i] ==  null)
+			{
+				break;
+			}
+			System.out.println("Date: " + df.format(date[i]) + ", Open: " + open[i] + ", High: " + high[i] + ", Low: " + low[i] + ", Close: " + close[i] + ", Volume: " + volume[i] + ", Adj Close: " + adj_close[i]);
+		}
+	}	
 }
