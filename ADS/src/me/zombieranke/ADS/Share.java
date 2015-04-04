@@ -78,8 +78,6 @@ public class Share
 		double max = close[0]; // would not be necessary here, but for consistency
 		int loopCount = 0;
 		
-		DateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-		
 		
 		for(i=0;i<30;i++)
 		{
@@ -141,10 +139,11 @@ public class Share
 			
 			if(temp.getTimeInMillis() <= lastTime.getTimeInMillis() + 86400000 * (1+daysSkipped))
 			{
-				x = 2 + stepX*i + 3*daysSkippedTotal;
+				x = 2 + stepX*i + stepX*daysSkippedTotal;
 				y = (int) Math.round((close[i] - matrixMin)/stepY);
 				matrix[y][x] = 'X';
 				
+				lastTime = temp;
 				daysSkipped = 0;
 			}
 			else
