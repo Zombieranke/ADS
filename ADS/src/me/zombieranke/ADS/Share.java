@@ -12,14 +12,35 @@ import java.util.Locale;
 
 import com.csvreader.CsvReader;
 
+/**The implementation of prize data of a share
+ * 
+ * @author Christoph Majcen and Arthur Bouz
+ *
+ */
 public class Share implements Serializable
 {
+	/**Automatically generated id to identify class at load*/
+	private static final long serialVersionUID = 6619004848220809275L;
+	
+	/**Representing dates from which we have price data*/
 	private Date date[];
+	
+	/**Opening price data for the share. Corresponds to a date with index of array*/
 	private double open[];
+	
+	/**Highest price data for the share. Corresponds to a date with index of array*/
 	private double high[];
+	
+	/**Lowest price data for the share. Corresponds to a date with index of array*/
 	private double low[];
+	
+	/**Closing price data for the share. Corresponds to a date with index of array*/
 	private double close[];
+	
+	/**Volume of the share. Corresponds to a date with index of array*/
 	private long volume[];
+	
+	/**Adj Close? price data for the share. Corresponds to a date with index of array*/
 	private double adj_close[];
 	
 	/**
@@ -40,6 +61,12 @@ public class Share implements Serializable
 		adj_close = new double[30];
 	}
 	
+	/**Import price data from csv
+	 * 
+	 * @param src The path to the soure file
+	 * @throws IOException
+	 * @throws ParseException
+	 */
 	public void importCsv(String src) throws IOException, ParseException
 	{
 		CsvReader reader = new CsvReader(src);
@@ -71,6 +98,7 @@ public class Share implements Serializable
 		while(reader.readRecord() && differenceInMillis < 2.6e9);
 	}
 	
+	/**Plot share*/
 	public void plot()
 	{
 		int i = 0;
@@ -202,6 +230,7 @@ public class Share implements Serializable
 		
 	}
 	
+	/**Print all price data*/
 	public void print()
 	{
 		int i;
@@ -221,6 +250,7 @@ public class Share implements Serializable
 		}
 	}
 	
+	/**Print most recent price data*/
 	public void printLatest()
 	{
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.ROOT);

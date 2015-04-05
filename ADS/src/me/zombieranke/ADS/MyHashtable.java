@@ -10,7 +10,7 @@ import java.io.Serializable;
 
 /**Implementation of a hash table holding entrys that represent a share
  * 
- * @author Arthur Bouz
+ * @author Christoph Majcen and Arthur Bouz
  */
 public class MyHashtable implements Serializable
 {
@@ -309,7 +309,7 @@ public class MyHashtable implements Serializable
 		}
 	}
 	
-	/**Creates a hashtable of existing hashtable using short names 
+	/**Creates a hashtable of existing hashtable using short names and drops deleted entries in the process
 	 * 
 	 * @return The resulting hashtable
 	 */
@@ -319,9 +319,28 @@ public class MyHashtable implements Serializable
 		
 		for(Entry e: table)
 		{
-			if(e != null)
+			if(e != null && !e.isDeleted())
 			{
 				hashtable.addEntry(e, e.getShortName());
+			}
+		}
+		
+		return hashtable;
+	}
+	
+	/**Creates a hashtable of existing hashtable using names and drops deleted entries in the process
+	 * 
+	 * @return The resulting hashtable
+	 */
+	public MyHashtable createNameHashtable()
+	{
+		MyHashtable hashtable = new MyHashtable();
+		
+		for(Entry e: table)
+		{
+			if(e != null && !e.isDeleted())
+			{
+				hashtable.addEntry(e, e.getName());
 			}
 		}
 		

@@ -5,14 +5,28 @@ import java.text.ParseException;
 import java.util.Locale;
 import java.util.Scanner;
 
-/**Main procedure for our */
+/**Main class for the share management program
+ * 
+ * @author Christoph Majcen and Arthur Bouz
+ *
+ */
 public class ADS {
 	
+	/**Hashtable indexing via share name*/
 	static MyHashtable nameTable;
+	
+	/**Hashtable indexing via share short name*/
 	static MyHashtable shortNameTable;
 	
+	/** Describes the serch mode*/
 	private enum Mode{NAME,SHORT_NAME}; 
 
+	/**Main function for the share management program
+	 * 
+	 * @param args Does nothing
+	 * @throws IOException
+	 * @throws ParseException
+	 */
 	public static void main(String[] args) throws IOException, ParseException
 	{
 		Scanner sc = new Scanner(System.in);
@@ -20,6 +34,13 @@ public class ADS {
 		sc.close();
 	}
 	
+	/**The menu function for user interaction
+	 * 
+	 * @param sc The Scanner responsible for handling user input
+	 * @return True if program should not be exited
+	 * @throws IOException
+	 * @throws ParseException
+	 */
 	private static boolean menu(Scanner sc) throws IOException, ParseException
 	{
 		printMenu();
@@ -62,6 +83,7 @@ public class ADS {
 		}
 	}
 
+	/**Prints the menu points*/
 	private static void printMenu()
 	{
 		System.out.println("1.ADD");
@@ -75,6 +97,10 @@ public class ADS {
 		
 	}
 	
+	/**Adds a share to both hashtables
+	 * 
+	 * @param sc The Scanner responsible for handling user input
+	 */
 	private static void add(Scanner sc)
 	{
 		boolean worked = false;
@@ -114,6 +140,10 @@ public class ADS {
 		
 	}
 	
+	/**Deletes a share from both hashtables
+	 * 
+	 * @param sc The Scanner responsible for handling user input
+	 */
 	private static void del(Scanner sc)
 	{
 		Mode mode = evaluateMode(sc);
@@ -129,6 +159,10 @@ public class ADS {
 		}
 	}
 	
+	/**Imports price data for a share
+	 * 
+	 * @param sc The Scanner responsible for handling user input
+	 */
 	private static void importData(Scanner sc) throws IOException, ParseException
 	{
 		Mode mode = evaluateMode(sc);
@@ -148,6 +182,10 @@ public class ADS {
 		}
 	}
 	
+	/**Searches for a share
+	 * 
+	 * @param sc The Scanner responsible for handling user input
+	 */
 	private static void search(Scanner sc)
 	{
 		Mode mode = evaluateMode(sc);
@@ -187,6 +225,10 @@ public class ADS {
 		}
 	}
 	
+	/**Plots a share
+	 * 
+	 * @param sc The Scanner responsible for handling user input
+	 */
 	private static void plot(Scanner sc)
 	{
 		Mode mode = evaluateMode(sc);
@@ -202,6 +244,10 @@ public class ADS {
 		}
 	}
 	
+	/**Saves nameTable to disk(shortNameTable one is recreated at load)
+	 * 
+	 * @param sc The Scanner responsible for handling user input
+	 */
 	private static void save(Scanner sc)
 	{
 		if(nameTable == null)
@@ -212,10 +258,15 @@ public class ADS {
 		{
 			System.out.println("Specify the filename you want to save your data in: ");
 			String fileName = sc.nextLine();
+			nameTable = nameTable.createNameHashtable();
 			nameTable.save(fileName);
 		}
 	}
 	
+	/** Loads nameTable from disk
+	 * 
+	 * @param sc The Scanner responsible for handling user input
+	 */
 	private static void load(Scanner sc)
 	{
 		System.out.println("Specify the filename you want to load your data from: ");
@@ -231,6 +282,11 @@ public class ADS {
 		}
 	}
 	
+	/**Evaluate if user wants t search according to name or short name
+	 * 
+	 * @param sc The Scanner responsible for handling user input
+	 * @return The search mode
+	 */
 	private static Mode evaluateMode(Scanner sc)
 	{
 		while(true)
