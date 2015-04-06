@@ -185,7 +185,7 @@ public class Share implements Serializable
 				
 				for(j=0;j<stepX;j++)	//This loop shall put dots '.' between the course values
 				{
-					if(!(daysSkipped > 0) && j==0) //if the last day was not skipped the loop starts from j=2 instead of zero as we do not want to overwrite the [X] in the matrix
+					if(daysSkipped == 0 && j==0) //if the last day was not skipped the loop starts from j=2 instead of zero as we do not want to overwrite the [X] in the matrix
 					{
 						j = 2;
 					}
@@ -212,8 +212,8 @@ public class Share implements Serializable
 				matrix[y][x] = 'X';
 				matrix[y][x+1] = ']';
 				
-				lastTime.setTime(turnedAroundDate[i]); //setting the variables right for the next cycle
-				daysSkipped = 0;
+				//lastTime.setTime(turnedAroundDate[i]); 
+				daysSkipped = 0; //resetting the daysSkipped
 			}
 			else
 			{
