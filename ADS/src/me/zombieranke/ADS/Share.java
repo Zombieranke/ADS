@@ -112,7 +112,7 @@ public class Share implements Serializable
 		{
 			if(date[i] ==  null)
 			{
-				loopCount = i - 1;
+				loopCount = i - 1; //How many entries do all the arrays have? loopCount -2
 				break;
 			}
 			else
@@ -129,14 +129,14 @@ public class Share implements Serializable
 		}
 		
 		
-		double stepY = (max - min)/34;
-		int stepX = 10;
-		double matrixMin = min - 3*stepY;
-		int matrixWidth = 30*stepX+4;
+		double stepY = (max - min)/36;  //The difference of values between [y][x] and [y+1][x]
+		int stepX = 10;		//Number of Columns until the next day is recorded in the matrix
+		double matrixMin = min - 2*stepY;  //Centering along the y-axis
+		int matrixWidth = 30*stepX+4;	//The last 30 days and 2 Columns for centering along the x-axis
 		int matrixHeight = 40;
 		
 		
-		char[][] matrix = new char[matrixHeight][matrixWidth];
+		char[][] matrix = new char[matrixHeight][matrixWidth]; //initializing the matrix with space characters
 		for(i=0;i<matrixHeight;i++)
 		{
 			for(j=0;j<matrixWidth;j++)
@@ -146,8 +146,8 @@ public class Share implements Serializable
 		}
 		
 		
-		Date[] turnedAroundDate = new Date[loopCount];
-		double[] turnedAroundClose = new double[loopCount];
+		Date[] turnedAroundDate = new Date[loopCount];	//turning around the arrays as zero would be latest date but it shall appear to the most right
+		double[] turnedAroundClose = new double[loopCount];	//of course i have to turn around the close-array as well
 	
 		for(i=0;i<loopCount;i++)
 		{
@@ -158,7 +158,7 @@ public class Share implements Serializable
 		Date lastDate = turnedAroundDate[0];
 
 		
-		Calendar lastTime = new GregorianCalendar();
+		Calendar lastTime = new GregorianCalendar();	//Calendars are needed for the getTimeInMillis()-function as it is needed to calculate the difference between to dates
 		lastTime.setTime(lastDate);
 		
 		Calendar temp = new GregorianCalendar();
@@ -166,53 +166,60 @@ public class Share implements Serializable
 		int daysSkippedTotal = 0;
 		
 		long tempForTimeInMillis = 0;
-		int x = 0;
-		int y = 0;
-		double deltaX = 0;
-		double deltaY = 0;
+		int x = 0;		// where exactly should the calculated entry should be located
+		int y = 0;		// this one is rounded in the loop
+		double deltaX = 0;	//time difference between the current and the last date
+		double deltaY = 0;	//value difference between the current value and the last value
 		
 		
 		for(i=0;i<loopCount-1;i++)
 		{
 			temp.setTime(turnedAroundDate[i]);
 			
-			if(i>0)
+			if(i>0)	//not possible for the first loop as otherwise turnedAroundDate[i-1] would throw an error
 			{
 				lastTime.setTime(turnedAroundDate[i-1]);
-				tempForTimeInMillis = temp.getTimeInMillis() - lastTime.getTimeInMillis();
-				deltaX = (double)(tempForTimeInMillis/86400000);
-				deltaY = turnedAroundClose[i] - turnedAroundClose[i-1];
+				tempForTimeInMillis = temp.getTimeInMillis() - lastTime.getTimeInMillis(); //difference of the dates in milliseconds
+				deltaX = (double)(tempForTimeInMillis/86400000);	//difference of the dates in days
+				deltaY = turnedAroundClose[i] - turnedAroundClose[i-1]; //difference of the values
 				
-				for(j=0;j<stepX;j++)
+				for(j=0;j<stepX;j++)	//This loop shall put dots '.' between the course values
 				{
-					if(!(daysSkipped > 0) && j==0)
+					if(!(daysSkipped > 0) && j==0) //if the last day was not skipped the loop starts from j=2 instead of zero as we do not want to overwrite the [X] in the matrix
 					{
 						j = 2;
 					}
-					x = 2 + stepX*i + stepX*daysSkippedTotal + j - stepX;
-					y = matrixHeight - (int) Math.round( ( ( (deltaY/(deltaX*stepX))*j + (deltaY/deltaX)*(daysSkipped)) + turnedAroundClose[i-1] - matrixMin)/stepY);
-
-					matrix[y][x] = '.';
+					x = 2 + stepX*i + stepX*daysSkippedTotal + j - stepX;	// 2 for centering, stepX*i + stepX*daysSkippedTotal for the amount of days, + j - stepX for accessing the columns between two days in the matrix
+					y = matrixHeight - (int) Math.round( ( ( (deltaY/deltaX)*daysSkipped) + (deltaY/(deltaX*stepX))*j  + turnedAroundClose[i-1] - matrixMin)/stepY);
+					//Ok... (deltaY/deltaX)*daysSkipped) saves the position if the dates are not directly subsequent - more or less they increase the 'd' in y = k*x + d
+					//  (deltaY/(deltaX*stepX))*j is the same as the 'k*x'  in y = k*x + d
+					// + turnedAroundClose[i-1] is the base where I have to start with my line
+					// - matrixMin and /stepY to bring the whole expression in a form for the matrix as it does not start from zero but for example from 132.42
+					// matrixHeight - (expression so far explained) for mirroring as the lowest values would be shown on the top of matrix which would make no sense
+					// I hope this explanation was helpful
+					
+					
+					matrix[y][x] = '.';  
 				}
 			}
 			
 			
-			if(temp.getTimeInMillis() <= lastTime.getTimeInMillis() + 86400000 * (1+daysSkipped))
-			{
-				x = 2 + stepX*i + stepX*daysSkippedTotal;
-				y = matrixHeight - (int) Math.round((turnedAroundClose[i] - matrixMin)/stepY);
+			if(temp.getTimeInMillis() <= lastTime.getTimeInMillis() + 86400000 * (1+daysSkipped)) //checks whether the dates are subsequent
+			{																					  // if they are not daysSkipped is increased so the span is increased by one whole day
+				x = 2 + stepX*i + stepX*daysSkippedTotal;  //placing on the right columns 
+				y = matrixHeight - (int) Math.round((turnedAroundClose[i] - matrixMin)/stepY); // easy if you understood the formula above
 				matrix[y][x-1] = '[';
 				matrix[y][x] = 'X';
 				matrix[y][x+1] = ']';
 				
-				lastTime.setTime(turnedAroundDate[i]);
+				lastTime.setTime(turnedAroundDate[i]); //setting the variables right for the next cycle
 				daysSkipped = 0;
 			}
 			else
 			{
 				daysSkipped++;
-				daysSkippedTotal++;
-				i--;
+				daysSkippedTotal++; //every single skipped day must be saved in order to get the positions on the x-axis right
+				i--;	//the i must be lowered as we want to picture the dates over 30 days and otherwise the loop would be too short
 			}
 		}
 		

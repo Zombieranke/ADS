@@ -115,6 +115,7 @@ public class Entry implements Serializable
 	/**Plot prize data with name, short name and wkn as header */
 	public void plotShare()
 	{
+		System.out.println("Name: " + name + "          Short name: " + shortName + "           WKN: " + wkn);
 		if(share == null)
 		{
 			System.out.println("Entry has no data yet. If you want to update the data use the 'IMPORT' function\n");
