@@ -86,6 +86,7 @@ public class Share implements Serializable
 			}
 			return;
 		}
+		
 		try
 		{
 			reader.readHeaders();
@@ -159,7 +160,7 @@ public class Share implements Serializable
 		double stepY = (max - min)/36;  //The difference of values between [y][x] and [y+1][x]
 		int stepX = 5;		//Number of Columns until the next day is recorded in the matrix
 		double matrixMin = min - 2*stepY;  //Centering along the y-axis
-		int matrixWidth = 31*stepX+4;	//The last 30 days and 2 Columns for centering along the x-axis
+		int matrixWidth = 32*stepX+4;	//The last 30 days and 2 Columns for centering along the x-axis
 		int matrixHeight = 40;
 		
 		

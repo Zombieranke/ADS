@@ -160,7 +160,7 @@ public class ADS {
 	private static void importData(Scanner sc)
 	{
 		Mode mode = evaluateMode(sc);
-		System.out.println("What share would you like to import?");
+		System.out.println("What share would you like to import data for?");
 		String toImport = sc.nextLine();
 		System.out.println("Please specify the exact Path to the csv file you want to import: ");
 		String path = sc.nextLine();

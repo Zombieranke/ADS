@@ -263,7 +263,7 @@ public class MyHashtable implements Serializable
 			System.out.println("Entry was already deleted");
 			return false;
 		}
-		else if(searchResult < 0)
+		else if(searchResult > 0)
 		{
 			return true;
 		}
