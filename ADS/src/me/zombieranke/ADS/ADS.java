@@ -27,7 +27,7 @@ public class ADS {
 	 * @throws IOException
 	 * @throws ParseException
 	 */
-	public static void main(String[] args) throws IOException, ParseException
+	public static void main(String[] args)
 	{
 		Scanner sc = new Scanner(System.in);
 		while(menu(sc));
@@ -41,7 +41,7 @@ public class ADS {
 	 * @throws IOException
 	 * @throws ParseException
 	 */
-	private static boolean menu(Scanner sc) throws IOException, ParseException
+	private static boolean menu(Scanner sc)
 	{
 		printMenu();
 		String option = sc.nextLine();
@@ -163,7 +163,7 @@ public class ADS {
 	 * 
 	 * @param sc The Scanner responsible for handling user input
 	 */
-	private static void importData(Scanner sc) throws IOException, ParseException
+	private static void importData(Scanner sc)
 	{
 		Mode mode = evaluateMode(sc);
 		System.out.println("What share would you like to import?");

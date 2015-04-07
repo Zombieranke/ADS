@@ -1,5 +1,6 @@
 package me.zombieranke.ADS;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Serializable;
 import java.text.DateFormat;
@@ -67,35 +68,63 @@ public class Share implements Serializable
 	 * @throws IOException
 	 * @throws ParseException
 	 */
-	public void importCsv(String src) throws IOException, ParseException
+	public void importCsv(String src)
 	{
-		CsvReader reader = new CsvReader(src);
-		reader.readHeaders();
+		CsvReader reader;
 		
-		Calendar c = new GregorianCalendar();
-		Calendar first = new GregorianCalendar();
-		DateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-		
-		reader.readRecord();
-		
-		int i = 0;
-		long differenceInMillis = 0;
-		
-		do
+		try
 		{
-			date[i] = df.parse(reader.get("Date"));
-			open[i] = Double.parseDouble(reader.get("Open"));
-			high[i] = Double.parseDouble(reader.get("High"));
-			low[i] = Double.parseDouble(reader.get("Low"));
-			close[i] = Double.parseDouble(reader.get("Close"));
-			volume[i] = Long.parseLong(reader.get("Volume"));
-			adj_close[i] = Double.parseDouble(reader.get("Adj Close"));
-			c.setTime(date[i]);
-			first.setTime(date[0]);
-			differenceInMillis = first.getTimeInMillis() - c.getTimeInMillis();
-			i++;
+			reader = new CsvReader(src);
 		}
-		while(reader.readRecord() && differenceInMillis < 2.6e9);
+		catch(IOException ioe)
+		{
+			if(ioe instanceof FileNotFoundException)
+			{
+				System.out.println("Could not find file! Please check specified path.");
+			}
+			else
+			{
+				ioe.printStackTrace();
+			}
+			return;
+		}
+		try
+		{
+			reader.readHeaders();
+			
+			Calendar c = new GregorianCalendar();
+			Calendar first = new GregorianCalendar();
+			DateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+			
+			reader.readRecord();
+			
+			int i = 0;
+			long differenceInMillis = 0;
+			
+			do
+			{
+				date[i] = df.parse(reader.get("Date"));
+				open[i] = Double.parseDouble(reader.get("Open"));
+				high[i] = Double.parseDouble(reader.get("High"));
+				low[i] = Double.parseDouble(reader.get("Low"));
+				close[i] = Double.parseDouble(reader.get("Close"));
+				volume[i] = Long.parseLong(reader.get("Volume"));
+				adj_close[i] = Double.parseDouble(reader.get("Adj Close"));
+				c.setTime(date[i]);
+				first.setTime(date[0]);
+				differenceInMillis = first.getTimeInMillis() - c.getTimeInMillis();
+				i++;
+			}
+			while(reader.readRecord() && differenceInMillis < 2.6e9);
+		}
+		catch(ParseException pe)
+		{
+			pe.printStackTrace();
+		} 
+		catch (IOException ioe)
+		{
+			ioe.printStackTrace();
+		}
 	}
 	
 	/**Plot share*/
@@ -130,7 +159,7 @@ public class Share implements Serializable
 		
 		
 		double stepY = (max - min)/36;  //The difference of values between [y][x] and [y+1][x]
-		int stepX = 10;		//Number of Columns until the next day is recorded in the matrix
+		int stepX = 5;		//Number of Columns until the next day is recorded in the matrix
 		double matrixMin = min - 2*stepY;  //Centering along the y-axis
 		int matrixWidth = 30*stepX+4;	//The last 30 days and 2 Columns for centering along the x-axis
 		int matrixHeight = 40;
@@ -172,7 +201,7 @@ public class Share implements Serializable
 		double deltaY = 0;	//value difference between the current value and the last value
 		
 		
-		for(i=0;i<loopCount-1;i++)
+		for(i=0;i<loopCount;i++)
 		{
 			temp.setTime(turnedAroundDate[i]);
 			

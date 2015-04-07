@@ -2,6 +2,7 @@ package me.zombieranke.ADS;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -392,7 +393,14 @@ public class MyHashtable implements Serializable
 		catch(IOException i)
 		{
 			System.out.println("Could not load Hashtable");
-			i.printStackTrace();
+			if(i instanceof FileNotFoundException)
+			{
+				System.out.println("File not found");
+			}
+			else
+			{
+				i.printStackTrace();
+			}
 			return null;
 		}
 		catch(ClassNotFoundException c)
