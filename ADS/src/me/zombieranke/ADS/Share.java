@@ -4,7 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Serializable;
 import java.text.DateFormat;
-import java.text.DecimalFormat;
+//import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -259,8 +259,8 @@ public class Share implements Serializable
 			}
 		}
 		
-		DecimalFormat decimalFormat = new DecimalFormat("#.00");
-		DateFormat dateFormat = new SimpleDateFormat("dd.MM", Locale.ENGLISH);
+		//DecimalFormat decimalFormat = new DecimalFormat("#.00");
+		//DateFormat dateFormat = new SimpleDateFormat("dd.MM", Locale.ENGLISH);
 		
 		for(i=0;i<matrixHeight;i++)
 		{
