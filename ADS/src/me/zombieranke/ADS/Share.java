@@ -141,7 +141,7 @@ public class Share implements Serializable
 		{
 			if(date[i] ==  null)
 			{
-				loopCount = i - 1; //How many entries do all the arrays have? loopCount -2
+				loopCount = i; //How many entries do all the arrays have? loopCount -2
 				break;
 			}
 			else
@@ -161,7 +161,7 @@ public class Share implements Serializable
 		double stepY = (max - min)/36;  //The difference of values between [y][x] and [y+1][x]
 		int stepX = 5;		//Number of Columns until the next day is recorded in the matrix
 		double matrixMin = min - 2*stepY;  //Centering along the y-axis
-		int matrixWidth = 30*stepX+4;	//The last 30 days and 2 Columns for centering along the x-axis
+		int matrixWidth = 31*stepX+4;	//The last 30 days and 2 Columns for centering along the x-axis
 		int matrixHeight = 40;
 		
 		
@@ -180,8 +180,8 @@ public class Share implements Serializable
 	
 		for(i=0;i<loopCount;i++)
 		{
-			turnedAroundDate[i] = date[loopCount - i];
-			turnedAroundClose[i] = close[loopCount - i];
+			turnedAroundDate[i] = date[loopCount - i - 1];
+			turnedAroundClose[i] = close[loopCount - i - 1];
 		}
 		
 		Date lastDate = turnedAroundDate[0];
