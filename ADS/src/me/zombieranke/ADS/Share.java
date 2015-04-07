@@ -65,8 +65,6 @@ public class Share implements Serializable
 	/**Import price data from csv
 	 * 
 	 * @param src The path to the soure file
-	 * @throws IOException
-	 * @throws ParseException
 	 */
 	public void importCsv(String src)
 	{

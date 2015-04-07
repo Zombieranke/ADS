@@ -1,7 +1,5 @@
 package me.zombieranke.ADS;
 
-import java.io.IOException;
-import java.text.ParseException;
 import java.util.Locale;
 import java.util.Scanner;
 
@@ -24,8 +22,6 @@ public class ADS {
 	/**Main function for the share management program
 	 * 
 	 * @param args Does nothing
-	 * @throws IOException
-	 * @throws ParseException
 	 */
 	public static void main(String[] args)
 	{
@@ -38,8 +34,6 @@ public class ADS {
 	 * 
 	 * @param sc The Scanner responsible for handling user input
 	 * @return True if program should not be exited
-	 * @throws IOException
-	 * @throws ParseException
 	 */
 	private static boolean menu(Scanner sc)
 	{
