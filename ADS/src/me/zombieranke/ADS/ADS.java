@@ -17,7 +17,7 @@ public class ADS {
 	static MyHashtable shortNameTable;
 	
 	/** Describes the serch mode*/
-	private enum Mode{NAME,SHORT_NAME}; 
+	enum Mode{NAME,SHORT_NAME}; 
 
 	/**Main function for the share management program
 	 * 
@@ -252,7 +252,7 @@ public class ADS {
 		{
 			System.out.println("Specify the filename you want to save your data in: ");
 			String fileName = sc.nextLine();
-			nameTable = nameTable.createNameHashtable();
+			nameTable = nameTable.createHashtable(Mode.NAME);
 			nameTable.save(fileName);
 		}
 	}
@@ -272,7 +272,7 @@ public class ADS {
 		}
 		else
 		{
-		shortNameTable = nameTable.createShortNameHashtable();
+			shortNameTable = nameTable.createHashtable(Mode.SHORT_NAME);
 		}
 	}
 	

@@ -9,6 +9,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
+import me.zombieranke.ADS.ADS.Mode;
+
 /**Implementation of a hash table holding entrys that represent a share
  * 
  * @author Christoph Majcen and Arthur Bouz
@@ -84,7 +86,7 @@ public class MyHashtable implements Serializable
 		
 		int hashValue = hash(toHash);
 		
-		if(hashValue == -1)
+		if(hashValue < -1)
 		{
 			return false;
 		}
@@ -131,26 +133,15 @@ public class MyHashtable implements Serializable
 	{
 		int hashValue = searchEntry(name);
 		
-		if(hashValue == -3)
-		{
-			return false;
-		}
-		
-		if(hashValue == -2)
-		{
-			System.out.println("Entry was not found");
-			return false;
-		}
-		else if(hashValue == -1)
-		{
-			System.out.println("Entry was already deleted");
-			return false;
-		}
-		else
+		if(evaluateSearch(hashValue))
 		{
 			table[hashValue].deleteShare();
 			System.out.println("Entry is now deleted");
 			return true;
+		}
+		else
+		{
+			return false;
 		}
 		
 	}
@@ -165,25 +156,14 @@ public class MyHashtable implements Serializable
 	{
 		int hashValue = searchEntry(toImport);
 		
-		if(hashValue == -3)
-		{
-			return false;
-		}
-		
-		if(hashValue == -2)
-		{
-			System.out.println("Entry was not found");
-			return false;
-		}
-		else if(hashValue == -1)
-		{
-			System.out.println("Entry was already deleted");
-			return false;
-		}
-		else
+		if(evaluateSearch(hashValue))
 		{
 			table[hashValue].importShare(share);
 			return true;
+		}
+		else
+		{
+			return false;
 		}
 	
 	}
@@ -237,20 +217,7 @@ public class MyHashtable implements Serializable
 	{
 		int hashValue = searchEntry(name);
 		
-		if(hashValue == -3)
-		{
-			return;
-		}
-		
-		if(hashValue == -2)
-		{
-			System.out.println("Entry was not found");
-		}
-		else if(hashValue == -1)
-		{
-			System.out.println("Entry was already deleted");
-		}
-		else
+		if(evaluateSearch(hashValue))
 		{
 			table[hashValue].plotShare();
 		}
@@ -264,20 +231,7 @@ public class MyHashtable implements Serializable
 	{
 		int hashValue = searchEntry(name);
 		
-		if(hashValue == -3)
-		{
-			return;
-		}
-		
-		if(hashValue == -2)
-		{
-			System.out.println("Entry was not found");
-		}
-		else if(hashValue == -1)
-		{
-			System.out.println("Entry was already deleted");
-		}
-		else
+		if(evaluateSearch(hashValue))
 		{
 			table[hashValue].printLatest();
 		}
@@ -291,49 +245,40 @@ public class MyHashtable implements Serializable
 	{
 		int hashValue = searchEntry(name);
 		
-		if(hashValue == -3)
-		{
-			return;
-		}
-		
-		if(hashValue == -2)
-		{
-			System.out.println("Entry was not found");
-		}
-		else if(hashValue == -1)
-		{
-			System.out.println("Entry was already deleted");
-		}
-		else
+		if(evaluateSearch(hashValue))
 		{
 			table[hashValue].print();
 		}
 	}
 	
-	/**Creates a hashtable of existing hashtable using short names and drops deleted entries in the process
-	 * 
-	 * @return The resulting hashtable
-	 */
-	public MyHashtable createShortNameHashtable()
-	{
-		MyHashtable hashtable = new MyHashtable();
-		
-		for(Entry e: table)
+	public boolean evaluateSearch(int searchResult)
+	{	
+		if(searchResult == -2)
 		{
-			if(e != null && !e.isDeleted())
-			{
-				hashtable.addEntry(e, e.getShortName());
-			}
+			System.out.println("Entry was not found");
+			return false;
 		}
-		
-		return hashtable;
+		else if(searchResult == -1)
+		{
+			System.out.println("Entry was already deleted");
+			return false;
+		}
+		else if(searchResult < 0)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
 	}
 	
-	/**Creates a hashtable of existing hashtable using names and drops deleted entries in the process
+	/**Creates a hashtable of existing hashtable using specified mode and drops deleted entries in the process
 	 * 
+	 * @param mode Which name should be used to create this table
 	 * @return The resulting hashtable
 	 */
-	public MyHashtable createNameHashtable()
+	public MyHashtable createHashtable(ADS.Mode mode)
 	{
 		MyHashtable hashtable = new MyHashtable();
 		
@@ -341,7 +286,18 @@ public class MyHashtable implements Serializable
 		{
 			if(e != null && !e.isDeleted())
 			{
-				hashtable.addEntry(e, e.getName());
+				if(mode  == Mode.NAME)
+				{
+					hashtable.addEntry(e, e.getName());
+				}
+				else if(mode == Mode.SHORT_NAME)
+				{
+					hashtable.addEntry(e, e.getShortName());
+				}
+				else
+				{
+					System.out.println("mode not supported");
+				}
 			}
 		}
 		
