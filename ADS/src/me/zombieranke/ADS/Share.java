@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Serializable;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -86,7 +87,6 @@ public class Share implements Serializable
 			}
 			return;
 		}
-		
 		try
 		{
 			reader.readHeaders();
@@ -160,7 +160,7 @@ public class Share implements Serializable
 		double stepY = (max - min)/36;  //The difference of values between [y][x] and [y+1][x]
 		int stepX = 5;		//Number of Columns until the next day is recorded in the matrix
 		double matrixMin = min - 2*stepY;  //Centering along the y-axis
-		int matrixWidth = 32*stepX+4;	//The last 30 days and 2 Columns for centering along the x-axis
+		int matrixWidth = 32*stepX + 6;	//The last 30 days and 4 Columns for space to the left border
 		int matrixHeight = 40;
 		
 		
@@ -216,8 +216,12 @@ public class Share implements Serializable
 					if(daysSkipped == 0 && j==0) //if the last day was not skipped the loop starts from j=2 instead of zero as we do not want to overwrite the [X] in the matrix
 					{
 						j = 2;
+						if(!(j<stepX))
+						{
+							break;
+						}
 					}
-					x = 2 + stepX*i + stepX*daysSkippedTotal + j - stepX;	// 2 for centering, stepX*i + stepX*daysSkippedTotal for the amount of days, + j - stepX for accessing the columns between two days in the matrix
+					x = 4 + stepX*i + stepX*daysSkippedTotal + j - stepX;	// 4 for border gap, stepX*i + stepX*daysSkippedTotal for the amount of days, + j - stepX for accessing the columns between two days in the matrix
 					y = matrixHeight - (int) Math.round( ( ( (deltaY/deltaX)*daysSkipped) + (deltaY/(deltaX*stepX))*j  + turnedAroundClose[i-1] - matrixMin)/stepY);
 					//Ok... (deltaY/deltaX)*daysSkipped) saves the position if the dates are not directly subsequent - more or less they increase the 'd' in y = k*x + d
 					//  (deltaY/(deltaX*stepX))*j is the same as the 'k*x'  in y = k*x + d
@@ -227,18 +231,22 @@ public class Share implements Serializable
 					// I hope this explanation was helpful
 					
 					
-					matrix[y][x] = '.';  
+					matrix[y][x] = '.';
 				}
 			}
 			
 			
 			if(temp.getTimeInMillis() <= lastTime.getTimeInMillis() + 86400000 * (1+daysSkipped)) //checks whether the dates are subsequent
 			{																					  // if they are not daysSkipped is increased so the span is increased by one whole day
-				x = 2 + stepX*i + stepX*daysSkippedTotal;  //placing on the right columns 
+				x = 4 + stepX*i + stepX*daysSkippedTotal;  //placing on the right columns 
 				y = matrixHeight - (int) Math.round((turnedAroundClose[i] - matrixMin)/stepY); // easy if you understood the formula above
-				matrix[y][x-1] = '[';
+
 				matrix[y][x] = 'X';
-				matrix[y][x+1] = ']';
+				if(stepX>=3)
+				{
+					matrix[y][x-1] = '[';
+					matrix[y][x+1] = ']';
+				}
 				
 				//lastTime.setTime(turnedAroundDate[i]); 
 				daysSkipped = 0; //resetting the daysSkipped
@@ -251,8 +259,13 @@ public class Share implements Serializable
 			}
 		}
 		
+		DecimalFormat decimalFormat = new DecimalFormat("#.00");
+		DateFormat dateFormat = new SimpleDateFormat("dd.MM", Locale.ENGLISH);
+		
 		for(i=0;i<matrixHeight;i++)
 		{
+			//System.out.print(decimalFormat.format(matrixMin+(40-i)*stepY));
+			
 			for(j=0;j<matrixWidth;j++)
 			{
 				System.out.print(matrix[i][j]);
@@ -261,6 +274,19 @@ public class Share implements Serializable
 		}
 		
 		
+	/*	Date tempDate = turnedAroundDate[0];
+		
+		Calendar tempConstant = new GregorianCalendar();
+		
+		tempConstant.setTime(tempDate);
+		System.out.print("  ");
+		for(i=1;i<30;i++)
+		{
+			temp.setTimeInMillis(tempConstant.getTimeInMillis()+(long)i* (long)86400000);
+			tempDate = temp.getTime();
+			System.out.print(dateFormat.format(tempDate)+" ");
+		}
+		*/
 		
 		
 	}
