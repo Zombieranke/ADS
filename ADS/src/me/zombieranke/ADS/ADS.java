@@ -159,6 +159,7 @@ public class ADS {
 	 */
 	private static void importData(Scanner sc)
 	{
+		boolean worked = false;
 		Mode mode = evaluateMode(sc);
 		System.out.println("What share would you like to import data for?");
 		String toImport = sc.nextLine();
@@ -168,11 +169,20 @@ public class ADS {
 		share.importCsv(path);
 		if(mode == Mode.NAME)
 		{
-			nameTable.importShareData(share,toImport);
+			worked = nameTable.importShareData(share,toImport);
 		}
 		else if(mode == Mode.SHORT_NAME)
 		{
-			shortNameTable.importShareData(share, toImport);
+			worked = shortNameTable.importShareData(share, toImport);
+		}
+		
+		if(worked)
+		{
+			System.out.println("Data successfully imported");
+		}
+		else
+		{
+			System.out.println("Could not import Data");
 		}
 	}
 	
