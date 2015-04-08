@@ -167,11 +167,12 @@ public class ADS {
 		String path = sc.nextLine();
 		Share share = new Share();
 		share.importCsv(path);
-		if(mode == Mode.NAME)
+		
+		if(mode == Mode.NAME && share != null)
 		{
 			worked = nameTable.importShareData(share,toImport);
 		}
-		else if(mode == Mode.SHORT_NAME)
+		else if(mode == Mode.SHORT_NAME && share != null)
 		{
 			worked = shortNameTable.importShareData(share, toImport);
 		}

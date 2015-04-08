@@ -115,7 +115,7 @@ public class MyHashtable implements Serializable
 				}
 				else
 				{
-					hashValue += i*i;
+					hashValue = (hashValue + i*i)%hashPrimeNumber ;
 				}
 			}
 		}
@@ -185,7 +185,7 @@ public class MyHashtable implements Serializable
 		
 		while(true)
 		{
-			hashValue += i*i;
+			hashValue = (hashValue + i*i)%hashPrimeNumber ;
 			if(table[hashValue] == null)
 			{
 				return -2;

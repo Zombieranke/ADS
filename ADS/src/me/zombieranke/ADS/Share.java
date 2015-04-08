@@ -158,7 +158,7 @@ public class Share implements Serializable
 		
 		
 		double stepY = (max - min)/36;  //The difference of values between [y][x] and [y+1][x]
-		int stepX = 10;		//Number of Columns until the next day is recorded in the matrix
+		int stepX = 5;		//Number of Columns until the next day is recorded in the matrix
 		double matrixMin = min - 2*stepY;  //Centering along the y-axis
 		int matrixWidth = 32*stepX + 6;	//The last 30 days and 4 Columns for space to the left border
 		int matrixHeight = 40;
